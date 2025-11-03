@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>For My Bby ❤️</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap');
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: radial-gradient(circle at top left, #111, #000);
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+}
+
+.page {
+  text-align: center;
+  display: none;
+  animation: fadeIn 1.5s ease forwards;
+  padding: 1.5rem;
+}
+
+.active {
+  display: block;
+}
+
+h1 {
+  font-family: 'Great Vibes', cursive;
+  font-size: 2.5em;
+  color: #FFD700;
+  text-shadow: 0 0 20px #ff4081;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.7;
+}
+
+button {
+  margin: 1rem;
+  padding: 0.6rem 1.4rem;
+  border: none;
+  border-radius: 8px;
+  background: #ff4da6;
+  color: white;
+  font-size: 1em;
+  cursor: pointer;
+  box-shadow: 0 0 10px #ff4da6;
+  transition: all 0.3s;
+}
+
+button:hover {
+  background: #ff80bf;
+  box-shadow: 0 0 20px #ff80bf;
+}
+
+#countdown {
+  font-size: 1.8em;
+  color: #FFD700;
+  margin-top: 10px;
+  text-shadow: 0 0 10px #ff4081;
+}
+
+.balloons {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.balloon {
+  position: absolute;
+  bottom: -150px;
+  font-size: 40px;
+  animation: floatUp 10s linear infinite;
+  opacity: 0.9;
+}
+
+@keyframes floatUp {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-120vh); opacity: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+
+<body>
+
+<div id="tapPage" class="page active">
+  <h1>Tap the screen to begin 🎵</h1>
+  <p>(Music will start playing)</p>
+</div>
+
+<div id="page1" class="page">
+  <h1>Hey babe 💕</h1>
+  <p>Do you wanna see what I made?</p>
+  <button onclick="nextPage('page2')">Yes 😚</button>
+  <button onclick="nextPage('page1no')">No 😒</button>
+</div>
+
+<div id="page1no" class="page">
+  <h1>No option removed 😏</h1>
+  <button onclick="nextPage('page2')">Okay, fine 😚</button>
+</div>
+
+<div id="page2" class="page">
+  <h1>At first tell me 💫</h1>
+  <p>Do you love me?</p>
+  <button onclick="nextPage('page3')">Yes ❤️</button>
+  <button onclick="nextPage('page2no')">No 🙄</button>
+</div>
+
+<div id="page2no" class="page">
+  <h1>No option removed 😝</h1>
+  <button onclick="nextPage('page3')">Yes ❤️</button>
+</div>
+
+<div id="page3" class="page">
+  <h1>Awww Bby Thank You for Loving Me 🥰</h1>
+  <p>I Love You So Much Bby 💝</p>
+  <button onclick="nextPage('countdownPage')">Next 💫</button>
+</div>
+
+<div id="countdownPage" class="page">
+  <h1>Countdown to Your Birthday 🎂</h1>
+  <div id="countdown"></div>
+  <p>Bby wait for countdown to be completed 💝</p>
+</div>
+
+<div id="birthdayPage" class="page">
+  <div class="balloons" id="balloons"></div>
+  <h1>🎉 Happy Birthday Bby ❤️ 🎉</h1>
+  <p>You are the most beautiful gift in my life 😚.<br>
+  You’re my favorite person, my safe place, and my sweetest feeling 🥰.<br>
+  I hope today gives you as much happiness as you give me every single day 💝.</p>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="song.mp3" type="audio/mp3">
+</audio>
+
+<script>
+// === PREVIEW MODE ===
+// set to true to skip countdown and test instantly
+const previewMode = true;
+
+// Page navigation
+function nextPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// Tap page to start
+document.getElementById('tapPage').addEventListener('click', () => {
+  document.getElementById('bgMusic').play().catch(()=>{});
+  nextPage('page1');
+});
+
+// Countdown
+const countdownElem = document.getElementById("countdown");
+const targetDate = new Date("Nov 5, 2025 00:00:00").getTime();
+
+if (!previewMode) {
+  const countdownInterval = setInterval(() => {
+    const now = new Date().getTime();
+    const diff = targetDate - now;
+
+    if (diff <= 0) {
+      clearInterval(countdownInterval);
+      nextPage('birthdayPage');
+      launchBalloons();
+      return;
+    }
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const secs = Math.floor((diff % (1000 * 60)) / 1000);
+
+    countdownElem.textContent = `${days}d ${hours}h ${mins}m ${secs}s`;
+  }, 1000);
+} else {
+  // Preview instantly skips to final page
+  nextPage('birthdayPage');
+  launchBalloons();
+}
+
+// Balloons
+function launchBalloons() {
+  const container = document.getElementById("balloons");
+  const colors = ["🎈","🎉","💖","💝","✨"];
+  for (let i=0; i<30; i++) {
+    const balloon = document.createElement("div");
+    balloon.className = "balloon";
+    balloon.innerHTML = colors[Math.floor(Math.random()*colors.length)];
+    balloon.style.left = Math.random()*100 + "vw";
+    balloon.style.animationDuration = 8 + Math.random()*5 + "s";
+    container.appendChild(balloon);
+  }
+}
+</script>
+</body>
+</html>
